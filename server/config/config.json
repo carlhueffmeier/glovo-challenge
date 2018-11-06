@@ -1,0 +1,4 @@
+{
+  "apiBaseUrl": "https://api.moneeda.com/api",
+  "exchanges": ["BNB", "BTX", "BFX"]
+}
