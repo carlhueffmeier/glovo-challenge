@@ -1,48 +1,48 @@
 <template>
   <div
-    class="container"
     @keydown="onKeydown($event)"
+    class="container"
     role="combobox" 
     aria-expanded="false" 
     aria-haspopup="listbox" 
-    aria-labelledby="autocomplete-0-label"
+    :aria-labelledby="`autocomplete-${autocompleteId}-label`"
   >
     <label
-      class="label"
-      :for="`autocomplete-${autocompleteId}-input`"
       :id="`autocomplete-${autocompleteId}-label`"
+      :for="`autocomplete-${autocompleteId}-input`"
+      class="label"
     >
       <slot name="label" />
     </label>
     <div class="input-container" :class="{'input-container--has-selection': hasSelection}">
       <input
-        class="text-input"
-        :class="{'text-input--open': isOpen}"
         v-model="inputValue"
         @focus="toggleOpen(true)"
+        :id="`autocomplete-${autocompleteId}-input`"
+        class="text-input"
+        :class="{'text-input--open': isOpen}"
+        :placeholder="placeholder"
         ref="textInput"
+        autocomplete="off"
         aria-autocomplete="list"
         :aria-labelledby="`autocomplete-${autocompleteId}-label`"
-        autocomplete="off"
-        :id="`autocomplete-${autocompleteId}-input`"
-        :placeholder="placeholder"
       >
       <button
         v-if="hasSelection"
+        @click="clearSelection"
         class="controller-button"
         type="button"
         role="button"
-        @click="clearSelection"
         aria-label="clear selection"
       >
         <XIcon />
       </button>
       <button
         v-else
+        @click="toggleOpen()"
         class="controller-button"
         type="button"
         role="button"
-        @click="toggleOpen()"
         :aria-label="isOpen ? 'close menu' : 'open menu'"
         aria-haspopup="true"
       >
@@ -51,17 +51,16 @@
     </div>
     <div class="menu-container">
       <ul
-        class="menu"
         v-if="isOpen"
+        class="menu"
         role="listbox"
         :aria-labelledby="`autocomplete-${autocompleteId}-label`"
-        id="autocomplete-0-menu"
       >
         <li 
-          class="menu-item"
           v-for="item in filteredItems"
           :key="itemToString(item)"
           @click="selectItem(item)"
+          class="menu-item"
           role="option"
         >
           {{itemToString(item)}}
